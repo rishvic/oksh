@@ -1,39 +1,58 @@
-#include "main.h"
+#define _POSIX_C_SOURCE 200809L
+#include "baseio.h"
+#include "rlio.h"
+#include "runner.h"
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
 
-#include <readline/history.h>
-#include <readline/readline.h>
+const char *usage =
+    "Usage: oksh -c command ...\n"
+    "       oksh script-file ...\n"
+    "       oksh ...\n";
 
-int running;
+int main(int argc, char *argv[]) {
+  int c, errflg = 0, help = 0;
+  char *comm = NULL;
+  int stat;
 
-int main() {
-  char *line;
-
-  if (isatty(STDOUT_FILENO)) {
-    running = 1;
-    printf("Hello tty\n");
-    while (running) {
-      line = readline(">>> ");
-
-      if (!line) {
-        running = 0;
+  while ((c = getopt(argc, argv, "c:h")) != -1) {
+    switch (c) {
+      case 'c':
+        comm = optarg;
         break;
-      }
-      if (!strcmp(line, "exit")) {
-        rl_free(line);
-        running = 0;
+      case 'h':
+        help = 1;
         break;
-      }
-
-      rl_free(line);
+      case '?':
+        errflg = 1;
     }
-    printf("BYE\n");
-  } else {
-    printf("Not tty\n");
-    printf("BYE\n");
   }
+  if (errflg || help) {
+#ifdef DEBUG
+    fprintf(stderr, "%s", usage);
+#endif
+    return errflg ? EXIT_FAILURE : EXIT_SUCCESS;
+  }
+
+  if (comm) {
+#ifdef DEBUG
+    fprintf(stderr, "Executing %s\n", comm);
+#endif
+    return EXIT_SUCCESS;
+  }
+
+  if (argv[optind]) {
+    freopen(argv[optind], "r", stdin);
+#ifdef DEBUG
+    fprintf(stderr, "Running script %s\n", argv[optind]);
+#endif
+    stat = RunShell(BaseIOGetline, BaseIOFree);
+    return stat;
+  }
+
+  stat = isatty(STDIN_FILENO) ? RunShell(RlGetline, RlFree)
+                              : RunShell(BaseIOGetline, BaseIOFree);
+  return stat;
 }

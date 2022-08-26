@@ -191,5 +191,5 @@ compile_commands.json
 /config.h
 
 # built binary and distribution tar
-rish
-rish-*.tar.gz
+oksh
+oksh-*.tar.gz

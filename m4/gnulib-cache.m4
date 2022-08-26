@@ -28,7 +28,7 @@
 
 # Specification in the form of a command-line invocation:
 # gnulib-tool --import --local-dir=gl \
-#  --lib=librish \
+#  --lib=liboksh \
 #  --source-base=lib \
 #  --m4-base=m4 \
 #  --doc-base=doc \
@@ -50,7 +50,7 @@ gl_M4_BASE([m4])
 gl_PO_BASE([])
 gl_DOC_BASE([doc])
 gl_TESTS_BASE([tests])
-gl_LIB([librish])
+gl_LIB([liboksh])
 gl_MAKEFILE_NAME([])
 gl_MACRO_PREFIX([gl])
 gl_PO_DOMAIN([])

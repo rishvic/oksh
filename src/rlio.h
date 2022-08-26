@@ -1,0 +1,9 @@
+#ifndef OKSH_RLIO_H_
+#define OKSH_RLIO_H_
+
+#include <sys/types.h>
+
+ssize_t RlGetline(char **lineptr);
+void RlFree(void *ptr);
+
+#endif /* OKSH_RLIO_H_ */

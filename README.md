@@ -1,4 +1,4 @@
-# rish
+# oksh
 
 A shell implementation, written in C.
 
@@ -11,7 +11,7 @@ To build the project, run:
 make
 ```
 
-A binary `rish` will be built in `src/` directory. If you want to install the
+A binary `oksh` will be built in `src/` directory. If you want to install the
 application to the specified prefix (default: `/usr/local`), run `make install`.
 To see all available configuration options, run `./configure --help`.
 

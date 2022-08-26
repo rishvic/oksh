@@ -1,8 +1,14 @@
 AM_CPPFLAGS = -I$(top_srcdir)/lib -I../lib
 AM_CFLAGS = $(WARN_CFLAGS)
 
-bin_PROGRAMS = rish
+bin_PROGRAMS = oksh
 
-rish_SOURCES = main.c main.h
-rish_CFLAGS = $(AM_CFLAGS) $(READLINE_CFLAGS)
-rish_LDADD = $(READLINE_LIBS)
+oksh_SOURCES = main.c \
+               baseio.c \
+               baseio.h \
+               rlio.c \
+               rlio.h \
+               runner.c \
+               runner.h
+oksh_CFLAGS = $(AM_CFLAGS) $(READLINE_CFLAGS)
+oksh_LDADD = $(READLINE_LIBS)
