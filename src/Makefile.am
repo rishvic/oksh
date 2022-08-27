@@ -8,6 +8,8 @@ oksh_SOURCES = main.c \
                baseio.h \
                rlio.c \
                rlio.h \
+               reader.c \
+               reader.h \
                runner.c \
                runner.h
 oksh_CFLAGS = $(AM_CFLAGS) $(READLINE_CFLAGS)

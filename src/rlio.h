@@ -3,7 +3,7 @@
 
 #include <sys/types.h>
 
-ssize_t RlGetline(char **lineptr);
+ssize_t RlGetline(char **lineptr, void *info);
 void RlFree(void *ptr);
 
 #endif /* OKSH_RLIO_H_ */

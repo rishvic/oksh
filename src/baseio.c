@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-ssize_t BaseIOGetline(char** lineptr) {
+ssize_t BaseIOGetline(char** lineptr, void* info) {
   char* line = NULL;
   size_t n = 0;
   ssize_t res;

@@ -3,7 +3,7 @@
 
 #include <sys/types.h>
 
-ssize_t BaseIOGetline(char **lineptr);
+ssize_t BaseIOGetline(char **lineptr, void *info);
 void BaseIOFree(void *ptr);
 
 #endif /* OKSH_BASEIO_H_ */
