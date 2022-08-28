@@ -6,6 +6,7 @@
 extern int prev_state;
 extern int running;
 
+void RunLine(char *line, size_t sz);
 int RunShell(ssize_t (*getl)(char **lineptr, void *info),
              void (*freel)(void *ptr));
 

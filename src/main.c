@@ -1,6 +1,8 @@
 #define _POSIX_C_SOURCE 200809L
 #include "main.h"
 #include "baseio.h"
+#include "execute.h"
+#include "parser.h"
 #include "rlio.h"
 #include "runner.h"
 #include "userinfo.h"
@@ -8,6 +10,7 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 #include <readline/history.h>
@@ -21,7 +24,9 @@ const char *usage =
 
 int main(int argc, char *argv[]) {
   int c, errflg = 0, help = 0;
+  size_t commsz;
   char *comm = NULL, histfile[1024L];
+  char *fcomm;
   int stat;
   FILE *new_stdin;
 
@@ -51,7 +56,11 @@ int main(int argc, char *argv[]) {
 #ifdef DEBUG
     fprintf(stderr, "Executing %s\n", comm);
 #endif
-    stat = EXIT_SUCCESS;
+    prev_state = EXIT_SUCCESS;
+    running = 1;
+    RunLine(comm, strlen(comm));
+    running = 0;
+    stat = prev_state;
     goto quit;
   }
 
