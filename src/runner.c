@@ -32,7 +32,11 @@ int RunShell(ssize_t (*getl)(char **lineptr, void *info),
       for (j = 0; j < cmd->argc; j++) {
         fprintf(stderr, " '%s'%s", cmd->argv[j], j == cmd->argc - 1 ? "" : ",");
       }
-      fprintf(stderr, " ]\n");
+      fprintf(stderr, " ]");
+      if (cmd->infile) fprintf(stderr, ", infile = %s", cmd->infile);
+      if (cmd->outfile) fprintf(stderr, ", outfile = %s", cmd->outfile);
+      if (cmd->errfile) fprintf(stderr, ", errfile = %s", cmd->errfile);
+      fprintf(stderr, "\n");
 #endif
 
       if (cmd) FreeCmd(cmd);
