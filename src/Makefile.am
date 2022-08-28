@@ -10,6 +10,8 @@ oksh_SOURCES = main.c \
                rlio.h \
                reader.c \
                reader.h \
+               parser.c \
+               parser.h \
                runner.c \
                runner.h \
                userinfo.c \

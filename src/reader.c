@@ -4,11 +4,21 @@
 #include <stdlib.h>
 #include <string.h>
 
-const size_t kLineSz = 120L;
-#define R_STK_SZ 32L
+#define OK_READER_LINE_SZ 120L
+#define OK_R_STK_SZ 32L
 
 int IsFinalReadType(ReadType rt) {
   return rt != kQuote && rt != kDQuote && rt != kBQuote && rt != kCmdSubst;
+}
+
+static char *AppendChar(char *dest, size_t *n, size_t *sz, const char c) {
+  if (*n < *sz + 2) {
+    *n <<= 1;
+    dest = (char *)realloc(dest, *n * sizeof(char));
+  }
+  dest[(*sz)++] = c;
+  dest[*sz] = '\0';
+  return dest;
 }
 
 static char *AppendStr(char *dest, size_t *n, size_t *sz, const char *src,
@@ -34,7 +44,7 @@ static ssize_t AppendCmd(char **lineptr, size_t *n, size_t *sz,
   }
   *lineptr = AppendStr(*lineptr, n, sz, seg, seg_sz);
   freel(seg);
-  *lineptr = AppendStr(*lineptr, n, sz, "\n", 1);
+  *lineptr = AppendChar(*lineptr, n, sz, '\n');
 
   return *sz;
 }
@@ -50,6 +60,7 @@ static void ProcBare(char **lineptr, size_t *n, size_t *sz,
       (*i)++;
       if (nm) *nm = *nm && (*lineptr)[*i] == '\n';
       if (*i + 1 == *sz && (*lineptr)[*i] == '\n') {
+        stk[*ssz] = kNotDone;
         res = AppendCmd(lineptr, n, sz, getl, freel, stk);
         if (res == -1) break;
       }
@@ -169,14 +180,14 @@ ssize_t ReadCmd(char **lineptr, size_t *n,
   int nm;
   size_t sz = 0, i, ssz;
   ssize_t res;
-  ReadType stk[R_STK_SZ];
+  ReadType stk[OK_R_STK_SZ];
   stk[0] = kDone;
 
   if (!lineptr) {
     return -1;
   }
   if (!*lineptr || !*n) {
-    *n = kLineSz;
+    *n = OK_READER_LINE_SZ;
     *lineptr = (char *)malloc(*n * sizeof(char));
   }
 

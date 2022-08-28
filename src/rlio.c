@@ -50,8 +50,8 @@ ssize_t RlGetline(char** lineptr, void* info) {
     user = GetUser();
     host = GetHost();
     GetDir(dir);
-    sprintf(prompt, BOLD_RED "%s" RESET "@%s " CYAN "%s " RESET, user, host,
-            dir);
+    sprintf(prompt, RESET BOLD_RED "%s" RESET "@%s " CYAN "%s " RESET, user,
+            host, dir);
     line = readline(prompt);
   } else {
     for (i = 0; !IsFinalReadType(stk[i]); i++) {

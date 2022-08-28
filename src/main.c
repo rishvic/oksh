@@ -18,6 +18,7 @@ int main(int argc, char *argv[]) {
   int c, errflg = 0, help = 0;
   char *comm = NULL;
   int stat;
+  FILE *new_stdin;
 
   while ((c = getopt(argc, argv, "c:h")) != -1) {
     switch (c) {
@@ -50,7 +51,12 @@ int main(int argc, char *argv[]) {
   }
 
   if (argv[optind]) {
-    freopen(argv[optind], "r", stdin);
+    new_stdin = freopen(argv[optind], "r", stdin);
+    if (!new_stdin) {
+      perror("oksh: can't open file");
+      stat = EXIT_FAILURE;
+      goto quit;
+    }
 #ifdef DEBUG
     fprintf(stderr, "Running script %s\n", argv[optind]);
 #endif
@@ -60,6 +66,7 @@ int main(int argc, char *argv[]) {
 
   if (isatty(STDIN_FILENO)) {
     signal(SIGINT, ClearLine);
+    signal(SIGQUIT, SIG_IGN);
     signal(SIGTSTP, SIG_IGN);
     stat = RunShell(RlGetline, RlFree);
   } else {

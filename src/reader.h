@@ -5,6 +5,7 @@
 
 typedef enum {
   kDone,
+  kNotDone,
   kPipe,
   kCmdAnd,
   kCmdOr,
@@ -13,13 +14,6 @@ typedef enum {
   kBQuote,
   kCmdSubst
 } ReadType;
-
-typedef struct command_t {
-  int argc;
-  char **argv;
-  char *in, *out, *err;
-  struct command_t *pipecmd;
-} Command;
 
 int IsFinalReadType(ReadType rt);
 

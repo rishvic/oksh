@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-struct {
+static struct {
   struct passwd* pwd;
   char host[OK_HOST_SIZE];
 } userinfo;
