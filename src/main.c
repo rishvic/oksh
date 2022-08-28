@@ -24,8 +24,7 @@ const char *usage =
 
 int main(int argc, char *argv[]) {
   int c, errflg = 0, help = 0;
-  char *comm = NULL, *fcomm, histfile[1024L];
-  size_t csz;
+  char *comm = NULL, histfile[1024L];
   int stat;
   FILE *new_stdin;
 
@@ -55,15 +54,9 @@ int main(int argc, char *argv[]) {
 #ifdef DEBUG
     fprintf(stderr, "Executing %s\n", comm);
 #endif
-    csz = strlen(comm);
     prev_state = EXIT_SUCCESS;
-    fcomm = (char *)malloc((csz + 2) * sizeof(char));
-    memcpy(fcomm, comm, csz);
-    fcomm[csz] = '\n';
-    fcomm[csz + 1] = '\0';
     running = 1;
-    RunLine(fcomm, csz + 1);
-    free(fcomm);
+    RunLine(comm, strlen(comm));
     running = 0;
     stat = prev_state;
     goto quit;

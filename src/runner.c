@@ -25,7 +25,7 @@ void RunLine(char *line, size_t sz) {
   pid_t pid, idstk[OK_PIPE_STK_SZ];
   char buf[OK_BUF_SZ];
   Command *cmd;
-  CmdNext rel, newrel;
+  CmdNext rel = kDoneCmd, newrel = kDoneCmd;
 #ifdef DEBUG
   int j;
 #endif
