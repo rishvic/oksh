@@ -3,6 +3,7 @@
 
 #include <sys/types.h>
 
+void ClearLine(int);
 ssize_t RlGetline(char **lineptr, void *info);
 void RlFree(void *ptr);
 

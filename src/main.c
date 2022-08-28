@@ -2,7 +2,9 @@
 #include "baseio.h"
 #include "rlio.h"
 #include "runner.h"
+#include "userinfo.h"
 
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -33,14 +35,18 @@ int main(int argc, char *argv[]) {
 #ifdef DEBUG
     fprintf(stderr, "%s", usage);
 #endif
-    return errflg ? EXIT_FAILURE : EXIT_SUCCESS;
+    stat = errflg ? EXIT_FAILURE : EXIT_SUCCESS;
+    goto quit;
   }
+
+  UpdateUserInfo();
 
   if (comm) {
 #ifdef DEBUG
     fprintf(stderr, "Executing %s\n", comm);
 #endif
-    return EXIT_SUCCESS;
+    stat = EXIT_SUCCESS;
+    goto quit;
   }
 
   if (argv[optind]) {
@@ -49,10 +55,17 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "Running script %s\n", argv[optind]);
 #endif
     stat = RunShell(BaseIOGetline, BaseIOFree);
-    return stat;
+    goto quit;
   }
 
-  stat = isatty(STDIN_FILENO) ? RunShell(RlGetline, RlFree)
-                              : RunShell(BaseIOGetline, BaseIOFree);
+  if (isatty(STDIN_FILENO)) {
+    signal(SIGINT, ClearLine);
+    signal(SIGTSTP, SIG_IGN);
+    stat = RunShell(RlGetline, RlFree);
+  } else {
+    stat = RunShell(BaseIOGetline, BaseIOFree);
+  }
+
+quit:
   return stat;
 }

@@ -3,7 +3,16 @@
 
 #include <sys/types.h>
 
-typedef enum { kDone, kQuote, kDQuote, kBQuote, kCmdSubst } ReadType;
+typedef enum {
+  kDone,
+  kPipe,
+  kCmdAnd,
+  kCmdOr,
+  kQuote,
+  kDQuote,
+  kBQuote,
+  kCmdSubst
+} ReadType;
 
 typedef struct command_t {
   int argc;
@@ -11,6 +20,8 @@ typedef struct command_t {
   char *in, *out, *err;
   struct command_t *pipecmd;
 } Command;
+
+int IsFinalReadType(ReadType rt);
 
 ssize_t ReadCmd(char **lineptr, size_t *n,
                 ssize_t (*getl)(char **lineptr, void *info),

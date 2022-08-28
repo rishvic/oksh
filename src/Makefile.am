@@ -11,6 +11,8 @@ oksh_SOURCES = main.c \
                reader.c \
                reader.h \
                runner.c \
-               runner.h
+               runner.h \
+               userinfo.c \
+               userinfo.h
 oksh_CFLAGS = $(AM_CFLAGS) $(READLINE_CFLAGS)
 oksh_LDADD = $(READLINE_LIBS)

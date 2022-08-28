@@ -7,6 +7,10 @@
 const size_t kLineSz = 120L;
 #define R_STK_SZ 32L
 
+int IsFinalReadType(ReadType rt) {
+  return rt != kQuote && rt != kDQuote && rt != kBQuote && rt != kCmdSubst;
+}
+
 static char *AppendStr(char *dest, size_t *n, size_t *sz, const char *src,
                        size_t src_sz) {
   while (*n < *sz + src_sz + 1) *n <<= 1;
@@ -73,15 +77,24 @@ static void ProcBare(char **lineptr, size_t *n, size_t *sz,
       break;
 
     case '|':
+      stk[*ssz] = kPipe;
       if (nm) *nm = 1;
-      if ((*lineptr)[*i + 1] == '|') (*i)++;
+      if ((*lineptr)[*i + 1] == '|') {
+        stk[*ssz] = kCmdOr;
+        (*i)++;
+      }
       break;
 
     case '&':
       if ((*lineptr)[*i + 1] == '&') {
+        stk[*ssz] = kCmdAnd;
         (*i)++;
         if (nm) *nm = 1;
       }
+      break;
+
+    case '#':
+      *i = *sz - 1;
       break;
 
     case ' ':
@@ -198,7 +211,7 @@ ssize_t ReadCmd(char **lineptr, size_t *n,
         ProcCmdSubst(lineptr, n, &sz, getl, freel, &i, stk, &ssz);
         break;
 
-      case kDone:
+      default:
         break;
     }
 
