@@ -63,6 +63,7 @@ int main(int argc, char *argv[]) {
     fcomm[csz + 1] = '\0';
     running = 1;
     RunLine(fcomm, csz + 1);
+    free(fcomm);
     running = 0;
     stat = prev_state;
     goto quit;

@@ -13,6 +13,7 @@
 #define CYAN "\x1B[36m"
 
 #define OK_DIR_SIZE 1024L
+#define OK_PROMPT_SIZE (OK_DIR_SIZE + 256L)
 
 static void GetDir(char* dir) {
   char pwd[OK_DIR_SIZE], *home;
@@ -43,7 +44,7 @@ void ClearLine(int sig) {
 ssize_t RlGetline(char** lineptr, void* info) {
   int i;
   char* line;
-  char *word, prompt[512] = "";
+  char *word, prompt[OK_PROMPT_SIZE] = "";
   char *user, *host, dir[OK_DIR_SIZE];
   ReadType* stk = (ReadType*)info;
 
@@ -70,6 +71,7 @@ ssize_t RlGetline(char** lineptr, void* info) {
           word = i ? " cmdsubst" : "cmdsubst";
           break;
         default:
+          word = "";
           break;
       }
       strcat(prompt, word);
@@ -94,7 +96,7 @@ ssize_t RlGetline(char** lineptr, void* info) {
 
   *lineptr = line;
 
-  return line ? strlen(line) : -1;
+  return line ? (ssize_t)strlen(line) : -1;
 }
 
 void RlFree(void* ptr) { rl_free(ptr); }
