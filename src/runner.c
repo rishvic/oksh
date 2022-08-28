@@ -110,9 +110,6 @@ int RunShell(ssize_t (*getl)(char **lineptr, void *info),
   ssize_t sz;
   char *line = NULL;
   size_t n = 0;
-#ifdef DEBUG
-  int j;
-#endif
 
   prev_state = EXIT_SUCCESS;
   running = 1;

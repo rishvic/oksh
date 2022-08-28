@@ -7,6 +7,7 @@ ssize_t BaseIOGetline(char** lineptr, void* info) {
   char* line = NULL;
   size_t n = 0;
   ssize_t res;
+  (void)info;
 
   res = getdelim(&line, &n, '\n', stdin);
   *lineptr = line;

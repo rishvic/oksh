@@ -33,6 +33,7 @@ static void GetDir(char* dir) {
 }
 
 void ClearLine(int sig) {
+  (void)sig;
   printf("\n");
   rl_replace_line("", 0);
   rl_on_new_line();
