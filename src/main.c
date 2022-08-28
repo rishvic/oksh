@@ -24,9 +24,7 @@ const char *usage =
 
 int main(int argc, char *argv[]) {
   int c, errflg = 0, help = 0;
-  size_t commsz;
   char *comm = NULL, histfile[1024L];
-  char *fcomm;
   int stat;
   FILE *new_stdin;
 
