@@ -282,9 +282,6 @@ Command *ParseLine(const char *line, size_t sz, size_t *i, CmdNext *rel) {
         break;
     }
   }
-  CloseWordInCmd(cmd, &wn, &wsz);
-  *rel = kDoneCmd;
-  done = 1;
 
   return cmd;
 }
