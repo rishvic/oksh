@@ -1,7 +1,9 @@
 #include "userinfo.h"
 
 #include <pwd.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 static struct {
@@ -26,6 +28,17 @@ char* GetUser() {
 }
 
 char* GetHost() { return userinfo.host; }
+
+void GetHistFile(char* dfile) {
+  char* file;
+
+  file = getenv("OKSH_HISTORY_FILE");
+  if (file) {
+    strcpy(dfile, file);
+    return;
+  }
+  sprintf(dfile, "%s/%s", GetHome(), ".oksh_history");
+}
 
 char* GetHome() {
   char* home;

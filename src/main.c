@@ -1,4 +1,5 @@
 #define _POSIX_C_SOURCE 200809L
+#include "main.h"
 #include "baseio.h"
 #include "rlio.h"
 #include "runner.h"
@@ -9,6 +10,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include <readline/history.h>
+
+int isinteractive = 0;
+
 const char *usage =
     "Usage: oksh -c command ...\n"
     "       oksh script-file ...\n"
@@ -16,7 +21,7 @@ const char *usage =
 
 int main(int argc, char *argv[]) {
   int c, errflg = 0, help = 0;
-  char *comm = NULL;
+  char *comm = NULL, histfile[1024L];
   int stat;
   FILE *new_stdin;
 
@@ -64,10 +69,15 @@ int main(int argc, char *argv[]) {
     goto quit;
   }
 
-  if (isatty(STDIN_FILENO)) {
+  isinteractive = isatty(STDIN_FILENO);
+
+  if (isinteractive) {
     signal(SIGINT, ClearLine);
     signal(SIGQUIT, SIG_IGN);
     signal(SIGTSTP, SIG_IGN);
+    GetHistFile(histfile);
+    using_history();
+    read_history(histfile);
     stat = RunShell(RlGetline, RlFree);
   } else {
     stat = RunShell(BaseIOGetline, BaseIOFree);

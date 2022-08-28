@@ -3,6 +3,9 @@
 
 #include <sys/types.h>
 
+extern int prev_state;
+extern int running;
+
 int RunShell(ssize_t (*getl)(char **lineptr, void *info),
              void (*freel)(void *ptr));
 

@@ -10,5 +10,6 @@ void UpdateUserInfo();
 char* GetUser();
 char* GetHost();
 char* GetHome();
+void GetHistFile(char* file);
 
 #endif /* OKSH_USERINFO_H_ */
