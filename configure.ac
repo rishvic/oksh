@@ -1,6 +1,6 @@
 #                                               -*- Autoconf -*-
 AC_PREREQ([2.71])
-AC_INIT([oksh], [0.1.1], [https://github.com/Colocasian/oksh/issues])
+AC_INIT([oksh], [0.1.2], [https://github.com/Colocasian/oksh/issues])
 AC_CONFIG_SRCDIR([src/main.c])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([build-aux])

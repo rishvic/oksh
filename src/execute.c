@@ -62,11 +62,23 @@ pid_t ExecuteCmd(const Command *cmd, int infd, int outfd) {
       fp = freopen(cmd->infile, "r", stdin);
       if (!fp) {
         perror("oksh: can't open input file");
-        return -1;
+        exit(EXIT_FAILURE);
       }
     }
-    if (cmd->outfile) freopen(cmd->outfile, "w", stdout);
-    if (cmd->errfile) freopen(cmd->outfile, "w", stderr);
+    if (cmd->outfile) {
+      fp = freopen(cmd->outfile, "w", stdout);
+      if (!fp) {
+        perror("oksh: can't open output file");
+        exit(EXIT_FAILURE);
+      }
+    }
+    if (cmd->errfile) {
+      fp = freopen(cmd->errfile, "w", stderr);
+      if (!fp) {
+        perror("oksh: can't open error file");
+        exit(EXIT_FAILURE);
+      }
+    }
 
     if (infd != STDIN_FILENO) dup2(infd, STDIN_FILENO);
     if (outfd != STDOUT_FILENO) dup2(outfd, STDOUT_FILENO);
