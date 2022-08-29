@@ -41,7 +41,6 @@ static int BuiltinHistory() {
 }
 
 pid_t ExecuteCmd(const Command *cmd, int infd, int outfd) {
-  int err;
   pid_t cid;
   FILE *fp;
 
@@ -75,9 +74,9 @@ pid_t ExecuteCmd(const Command *cmd, int infd, int outfd) {
     if (infd != STDIN_FILENO) dup2(infd, STDIN_FILENO);
     if (outfd != STDOUT_FILENO) dup2(outfd, STDOUT_FILENO);
 
-    err = execvp(cmd->argv[0], cmd->argv);
+    execvp(cmd->argv[0], cmd->argv);
     perror("oksh: command not found");
-    return err;
+    exit(EXIT_FAILURE);
   }
 
   return cid;
