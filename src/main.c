@@ -41,9 +41,7 @@ int main(int argc, char *argv[]) {
     }
   }
   if (errflg || help) {
-#ifdef DEBUG
     fprintf(stderr, "%s", usage);
-#endif
     stat = errflg ? EXIT_FAILURE : EXIT_SUCCESS;
     goto quit;
   }
